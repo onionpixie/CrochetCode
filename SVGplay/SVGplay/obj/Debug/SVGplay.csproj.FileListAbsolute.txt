@@ -1,0 +1,9 @@
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\bin\Debug\SVGplay.exe.config
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\bin\Debug\SVGplay.exe
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\bin\Debug\SVGplay.pdb
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.csprojResolveAssemblyReference.cache
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.Form1.resources
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.Properties.Resources.resources
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.csproj.GenerateResource.Cache
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.exe
+c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.pdb
