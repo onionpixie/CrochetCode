@@ -39,6 +39,7 @@ namespace SVGplay
             end,
             vch, // my name for use when chain stitches are vertical
             dc5shell,
+            dcinc,
         }
         public enum StitchName
         {

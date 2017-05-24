@@ -23,5 +23,6 @@ namespace SVGplay
 
         public float stitchWidth = 10.0f;
         public float singleUnitHeight = 10.0f;
+        public bool circle = true;
     }
 }

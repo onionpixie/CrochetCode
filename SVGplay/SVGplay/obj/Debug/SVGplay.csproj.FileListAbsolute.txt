@@ -7,3 +7,12 @@ c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\
 c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.csproj.GenerateResource.Cache
 c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.exe
 c:\users\carrie\documents\visual studio 2015\Projects\SVGplay\SVGplay\obj\Debug\SVGplay.pdb
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\bin\Debug\SVGplay.exe.config
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\obj\Debug\SVGplay.exe
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\obj\Debug\SVGplay.pdb
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\bin\Debug\SVGplay.exe
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\bin\Debug\SVGplay.pdb
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\obj\Debug\SVGplay.csprojResolveAssemblyReference.cache
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\obj\Debug\SVGplay.Form1.resources
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\obj\Debug\SVGplay.Properties.Resources.resources
+C:\Users\Carrie\Documents\Crochet Code\trunk\SVGplay\SVGplay\obj\Debug\SVGplay.csproj.GenerateResource.Cache

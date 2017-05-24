@@ -26,7 +26,7 @@ namespace SVGplay
             {
                 if (entry.symbol == Stitch.StitchSymbol.line || entry.symbol == Stitch.StitchSymbol.turn)
                 {
-                    startingY = startingY + 30.0f;
+                    startingY = startingY + 100.0f;
                 }
             }
             return startingY;
@@ -74,6 +74,7 @@ namespace SVGplay
                             lineHeight = minRowHeight * 4;
                         }
                         break;
+                    case Stitch.StitchSymbol.line:
                     case Stitch.StitchSymbol.turn:
                     case Stitch.StitchSymbol.end:
                         rowHeigths.Add(lineHeight);
@@ -107,6 +108,12 @@ namespace SVGplay
                         break;
                     case Stitch.StitchSymbol.dc5shell:
                         if (lineHeight < minRowHeight * 3)
+                        {
+                            lineHeight = minRowHeight * 3;
+                        }
+                        break;
+                    case Stitch.StitchSymbol.dcinc:
+                        if (lineHeight < minRowHeight *3)
                         {
                             lineHeight = minRowHeight * 3;
                         }
