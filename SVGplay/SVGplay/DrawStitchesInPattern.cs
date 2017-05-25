@@ -23,8 +23,11 @@ namespace SVGplay
         bool isCircle = DrawingParameters.GetInstance().circle;
         float cumulativeRowHeight = 10;
         PointF startingCoords;
-        private double angleSpacing = 360/6;
-
+        private double angleSpacing = 360/12;
+        List<PointF> topPoints = new List<PointF>();
+        int stitchNum = 0;
+        PointF nextCoords;
+        
         public DrawStitchesInPattern(List<float> rowHeights, Graphics pG, Pen pP, float pY)
         {
             rowSpacings = rowHeights;
@@ -35,7 +38,31 @@ namespace SVGplay
             {
                 x = pY;
                 startingCoords = new PointF(x, y+cumulativeRowHeight);
+                //topPoints.Add(startingCoords);
+                for (int i = 0; i < 12; i++)
+                {
+                    if (i == 0)
+                    {
+                        stitchRotation = 270;
+                    }
+                    else
+                    {
+                        stitchRotation = stitchRotation + angleSpacing;
+                    }                   
+                    if (stitchRotation > 360)
+                    {
+                        stitchRotation = stitchRotation - 360;
+                    }
+                    float TempX = x + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+                    float TempY = y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                    PointF tempPoint = new PointF(TempX, TempY);
+                    topPoints.Add(tempPoint);
+                }
+                x = topPoints[0].X;
+                y = topPoints[0].Y;
+                stitchRotation = 270;
             }
+
         }
 
         public void ChartGo(List<Stitch> stitchPattern)
@@ -272,7 +299,6 @@ namespace SVGplay
                             draw.DrawDoubleCrochet(tempX, y, stitchRotation);
                             draw.DrawDoubleCrochet(tempX, y, stitchRotation + 30);
                             draw.DrawDoubleCrochet(tempX, y, stitchRotation + 60);
-                            //draw.drawFiveDCShell(x, y, true);
                             x += (widthOfStitchSymbols + stitchSpacing);
                             x += (widthOfStitchSymbols + stitchSpacing);
                             x += (widthOfStitchSymbols + stitchSpacing);
@@ -287,7 +313,6 @@ namespace SVGplay
                             draw.DrawDoubleCrochet(tempX, y, stitchRotation);
                             draw.DrawDoubleCrochet(tempX, y, stitchRotation + 30);
                             draw.DrawDoubleCrochet(tempX, y, stitchRotation + 60);
-                            //draw.drawFiveDCShell(x, y, false);
                             x -= (widthOfStitchSymbols + stitchSpacing);
                             x -= (widthOfStitchSymbols + stitchSpacing);
                             x -= (widthOfStitchSymbols + stitchSpacing);
@@ -303,39 +328,81 @@ namespace SVGplay
             {
                 switch (stitch)
                 {
-                    case Stitch.StitchSymbol.dc:
-                        draw.DrawDoubleCrochet(x, y, stitchRotation);
+                    case Stitch.StitchSymbol.hdc:
+                        nextCoords = draw.DrawHalfDoubleCrochet(x, y, stitchRotation);
+                        topPoints.Add(nextCoords);
                         stitchRotation = stitchRotation + angleSpacing;
                         if (stitchRotation > 360)
                         {
                             stitchRotation = stitchRotation - 360;
                         }
-                        x = startingCoords.X + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
-                        y = startingCoords.Y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                        //x = startingCoords.X + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+                        //y = startingCoords.Y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                        stitchNum++;
+                        x = topPoints[stitchNum].X;
+                        y = topPoints[stitchNum].Y;
+                        //y = topPoints[stitchNum].Y + (7 * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                        break;
+                    case Stitch.StitchSymbol.hdcinc:
+                        nextCoords = draw.DrawHalfDoubleCrochet(x, y, stitchRotation - 18);
+                        topPoints.Add(nextCoords);
+                        nextCoords = draw.DrawHalfDoubleCrochet(x, y, stitchRotation + 18);
+                        topPoints.Add(nextCoords);
+                        stitchRotation = stitchRotation + angleSpacing;
+                        if (stitchRotation > 360)
+                        {
+                            stitchRotation = stitchRotation - 360;
+                        }
+                        stitchNum++;
+                        x = topPoints[stitchNum].X;
+                        y = topPoints[stitchNum].Y;
+                        //x = startingCoords.X + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+                        //y = startingCoords.Y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                        break;
+                    case Stitch.StitchSymbol.dc:
+                        nextCoords = draw.DrawDoubleCrochet(x, y, stitchRotation);
+                        topPoints.Add(nextCoords);
+                        stitchRotation = stitchRotation + angleSpacing;
+                        if (stitchRotation > 360)
+                        {
+                            stitchRotation = stitchRotation - 360;
+                        }
+                        //x = startingCoords.X + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+                        //y = startingCoords.Y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                        stitchNum++;
+                        x = topPoints[stitchNum].X;
+                        y = topPoints[stitchNum].Y;
+                        //y = topPoints[stitchNum].Y + (7 * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                        break;
+                    case Stitch.StitchSymbol.dcinc:
+                        nextCoords = draw.DrawDoubleCrochet(x, y, stitchRotation - 15);
+                        topPoints.Add(nextCoords);
+                        nextCoords = draw.DrawDoubleCrochet(x, y, stitchRotation + 15);
+                        topPoints.Add(nextCoords);
+                        stitchRotation = stitchRotation + angleSpacing;
+                        if (stitchRotation > 360)
+                        {
+                            stitchRotation = stitchRotation - 360;
+                        }
+                        stitchNum++;
+                        x = topPoints[stitchNum].X;
+                        y = topPoints[stitchNum].Y;
+                        //x = startingCoords.X + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+                        //y = startingCoords.Y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
                         break;
                     case Stitch.StitchSymbol.line:
-                        x = startingCoords.X;
+                        x = topPoints[stitchNum].X;
+                        y = topPoints[stitchNum].Y;
                         cumulativeRowHeight = cumulativeRowHeight + rowSpacings[row] + 7;
-                        y = startingCoords.Y - cumulativeRowHeight;
-                        //cumulativeRowHeight = cumulativeRowHeight + rowSpacings[row] + 7;
-                        //currentY = y;
                         row++;
-                        stitchRotation = 270;
-                        angleSpacing = 360 / ((row) * 6);
+                        PointF origin = startingCoords;
+                        PointF firstStitchNewRound = topPoints[stitchNum];
+                        stitchRotation = 270-((Angle(origin, firstStitchNewRound)+180)-270);
+                        angleSpacing = 360 / ((row) * 12);
                         break;
                     case Stitch.StitchSymbol.end:
                         break;
-                    case Stitch.StitchSymbol.dcinc:
-                            draw.DrawDoubleCrochet(x, y, stitchRotation - 30);
-                            draw.DrawDoubleCrochet(x, y, stitchRotation + 30);
-                        stitchRotation = stitchRotation + angleSpacing;
-                        if (stitchRotation > 360)
-                        {
-                            stitchRotation = stitchRotation - 360;
-                        }
-                        x = startingCoords.X + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
-                        y = startingCoords.Y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
-                        break;
+                    
                     default:
                         throw new Exception("Unknown stitch symbol is circle");
                 }
@@ -345,6 +412,11 @@ namespace SVGplay
         private double DegreeToRadian(double angle)
         {
             return Math.PI * angle / 180.0;
+        }
+        const double Rad2Deg = 180.0 / Math.PI;
+        private double Angle(PointF start, PointF end)
+        {
+            return Math.Atan2(start.Y - end.Y, end.X - start.X) * Rad2Deg;
         }
     }
 }

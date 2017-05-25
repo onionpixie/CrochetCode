@@ -13,7 +13,7 @@ namespace SVGplay
         float doubleRowHeight;
         float tripleRowHeight;
         float quadRowHeight;
-
+        private float rowSpacing = 5.0f;
 
         public DrawStitches(Graphics pG, Pen pP)
         {
@@ -44,14 +44,19 @@ namespace SVGplay
             draw.drawLine(horizontalLineStartPoint, horizontalLineEndPoint); // draw horizontal line
             draw.drawLine(horizontalLineStartPoint, horizontalLineOtherEndPoint); // draw horizontal line
         }
-        public void DrawHalfDoubleCrochet(float x, float y, double pAngle)
+        public PointF DrawHalfDoubleCrochet(float x, float y, double pAngle)
         {
             PointF verticalLineStartPoint = new PointF(x, y);
             PointF verticalLineEndPoint = draw.CalculateEndPoint(verticalLineStartPoint, doubleRowHeight, pAngle); // find end point of line
             draw.drawLine(verticalLineStartPoint, verticalLineEndPoint);
-            PointF topLineStartPoint = new PointF(x, y);
-            PointF topLineEndPoint = draw.CalculateEndPoint(topLineStartPoint, widthOfStitchSymbols, pAngle + 90);
+            PointF topLineStartPoint = new PointF(verticalLineEndPoint.X, verticalLineEndPoint.Y);
+            float length = widthOfStitchSymbols * 0.5f;
+            PointF topLineEndPoint = draw.CalculateEndPoint(topLineStartPoint, length, pAngle + 90);
+            PointF topLineOtherEndPoint = draw.CalculateEndPoint(topLineStartPoint, length, pAngle - 90);
             draw.drawLine(topLineStartPoint, topLineEndPoint);
+            draw.drawLine(topLineStartPoint, topLineOtherEndPoint);
+            PointF pointForNextStitch = draw.CalculateEndPoint(verticalLineEndPoint, rowSpacing, pAngle);
+            return pointForNextStitch;
         }
         public void DrawTopLine(float x, float y, double pAngle)
         {
@@ -65,7 +70,7 @@ namespace SVGplay
             PointF topLineEndPoint = draw.CalculateEndPoint(topLineStartPoint, (widthOfStitchSymbols* widthMultiplier), pAngle + 90);
             draw.drawLine(topLineStartPoint, topLineEndPoint);
         }
-        public void DrawDoubleCrochet(float x, float y, double pAngle)
+        public PointF DrawDoubleCrochet(float x, float y, double pAngle)
         {
             PointF verticalLineStartPoint = new PointF(x, y);
             PointF verticalLineEndPoint = draw.CalculateEndPoint(verticalLineStartPoint, tripleRowHeight, pAngle); // find end point of line
@@ -85,6 +90,8 @@ namespace SVGplay
             PointF topLineOtherEndPoint = draw.CalculateEndPoint(topLineStartPoint, length, pAngle -90);
             draw.drawLine(topLineStartPoint, topLineEndPoint);
             draw.drawLine(topLineStartPoint, topLineOtherEndPoint);
+            PointF pointForNextStitch = draw.CalculateEndPoint(verticalLineEndPoint, rowSpacing, pAngle);
+            return pointForNextStitch;
         }
         public void DrawToplessDoubleCrochet(float x, float y, double pAngle)
         {

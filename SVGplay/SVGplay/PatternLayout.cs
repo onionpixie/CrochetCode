@@ -118,6 +118,12 @@ namespace SVGplay
                             lineHeight = minRowHeight * 3;
                         }
                         break;
+                    case Stitch.StitchSymbol.hdcinc:
+                        if (lineHeight < minRowHeight * 2)
+                        {
+                            lineHeight = minRowHeight * 2;
+                        }
+                        break;
                     default:
                         throw new Exception("Unknown stitch symbol");
                 }
