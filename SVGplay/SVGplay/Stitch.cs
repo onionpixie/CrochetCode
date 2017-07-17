@@ -1,21 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SVGplay
 {
-    class Stitch
+    public abstract class Stitch
     {
-        public StitchSymbol symbol;                                    
-        public int number;
 
-        public Stitch(StitchSymbol _symbol, int pNumber)
+        public StitchSymbol symbol;        
+        public float heightMultiplier;
+        public float widthMultiplier;
+
+        public Stitch(StitchSymbol pSymbol,
+                      float pHeightMultiplier,
+                      float pWidthMultiplier)
         {
-            symbol = _symbol;
-            number = pNumber;
+            symbol = pSymbol;
+            heightMultiplier = pHeightMultiplier;
+            widthMultiplier = pWidthMultiplier;
         }
+
+        public abstract void Draw(float x, float y, double pAngle);
+
+        //public int number;
+        //public PointF startingCoordinate;
+        //public double angle;
+        //public Stitch(StitchSymbol pSymbol, 
+        //              int pNumber, 
+        //              PointF pStartingCoordinate, 
+        //              double pAngle,
+        //              float pHeightMultiplier,
+        //              float pWidthMultiplier)
+        //{
+        //    symbol = pSymbol;
+        //    number = pNumber;
+        //    startingCoordinate = pStartingCoordinate;
+        //    angle = pAngle;
+        //    heightMultiplier = pHeightMultiplier;
+        //    widthMultiplier = pWidthMultiplier;
+        //}
 
         public enum StitchSymbol
         {

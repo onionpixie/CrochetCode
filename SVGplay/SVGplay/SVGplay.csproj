@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculatePoints.cs" />
+    <Compile Include="DoubleCrochet.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingComponents.cs" />
     <Compile Include="DrawingParameters.cs" />
@@ -57,11 +59,15 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HalfDoubleCrochet.cs" />
+    <Compile Include="LineCrochetStitch.cs" />
     <Compile Include="ParseInput.cs" />
     <Compile Include="PatternLayout.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleCrochet.cs" />
     <Compile Include="Stitch.cs" />
+    <Compile Include="TrebleCrochet.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

@@ -3,3 +3,9 @@ C:\Users\Carrie\Documents\Visual Studio 2015\Projects\SVGplay\ConsoleApplication
 C:\Users\Carrie\Documents\Visual Studio 2015\Projects\SVGplay\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
 C:\Users\Carrie\Documents\Visual Studio 2015\Projects\SVGplay\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
 C:\Users\Carrie\Documents\Visual Studio 2015\Projects\SVGplay\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Users\Carrie\Documents\GitHub\CrochetCode\SVGplay\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Users\Carrie\Documents\GitHub\CrochetCode\SVGplay\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Users\Carrie\Documents\GitHub\CrochetCode\SVGplay\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Users\Carrie\Documents\GitHub\CrochetCode\SVGplay\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+C:\Users\Carrie\Documents\GitHub\CrochetCode\SVGplay\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Users\Carrie\Documents\GitHub\CrochetCode\SVGplay\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
