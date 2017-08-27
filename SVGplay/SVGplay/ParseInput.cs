@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SVGplay.Stitches;
 
 namespace SVGplay
 {
@@ -14,50 +13,36 @@ namespace SVGplay
             input = stringToParse;
         }
 
-        List<int> numofStitches = new List<int>();
+        List<int> numOfStitches = new List<int>();
 
         public List<Stitch> ReadInputIntoList()
         {
             string[] separators = { ",", " " };
-            char[] stitchSeparators = { ' ', ',' };
+            //char[] stitchSeparators = { ' ', ',' };
 
-            List<string> stitchSymbols = input.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-
-            List<string> onlyStitchSymbols = new List<string>();
-            //List<int> numofStitches = new List<int>();
+            var stitchSymbols = input.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
+            
+            var listStitchSymbols = new List<string>();
             foreach (var entry in stitchSymbols)
             {
-                int num;
-                if (Int32.TryParse(entry, out num))
+                if (int.TryParse(entry, out var num))
                 {
-                    numofStitches.Add(num);
+                    numOfStitches.Add(num);
                 }
                 else if (entry == "line" || entry == "skip" || entry == "turn" || entry == "end")
                 {
-                    numofStitches.Add(1);
-                    onlyStitchSymbols.Add(entry);
+                    numOfStitches.Add(1);
+                    listStitchSymbols.Add(entry);
                 }
                 else
-                    onlyStitchSymbols.Add(entry);
+                {
+                    listStitchSymbols.Add(entry);
+                }
             }
 
-            bool startingChain = true;
-            for (int i = 0; i < onlyStitchSymbols.Count; i++)
-            {
-                if (i == 0) { } // skip first stitch
+            listStitchSymbols = ConvertChainsToVerticalChains(listStitchSymbols);
 
-                else if (onlyStitchSymbols[i] == "ch" && onlyStitchSymbols[i - 1] == "turn" && startingChain == false) // chs immediate before or after a turn are vch
-                    onlyStitchSymbols[i] = "vch";
-
-                else if (onlyStitchSymbols[i] == "ch" && onlyStitchSymbols[i + 1] == "turn" && startingChain == false)
-                    onlyStitchSymbols[i] = "vch";
-
-                else if (onlyStitchSymbols[i] == "turn" && startingChain == true) // after first turn we can start looking for vch
-                    startingChain = false;
-            }
-
-            List<Stitch.StitchSymbol> convertedStitchSymbols = onlyStitchSymbols.ConvertAll(delegate (string x)
+            List<Stitch.StitchSymbol> convertedStitchSymbols = listStitchSymbols.ConvertAll(delegate (string x)
             {
                 return (Stitch.StitchSymbol)Enum.Parse(typeof(Stitch.StitchSymbol), x);
             });
@@ -78,7 +63,17 @@ namespace SVGplay
                     case Stitch.StitchSymbol.hdc:
                         stitch = new HalfDoubleCrochet();
                         break;
+                    case Stitch.StitchSymbol.tr:
+                        stitch = new TrebleCrochet();
+                        break;
+                    case Stitch.StitchSymbol.ch:
+                        stitch = new HorizontalChainStitch();
+                        break;
+                    case Stitch.StitchSymbol.vch:
+                        stitch = new VerticalChainStitch();
+                        break;
                     case Stitch.StitchSymbol.line:
+                    case Stitch.StitchSymbol.turn:
                         stitch = new LineCrochetStitch();
                         break;
                     default:
@@ -91,9 +86,33 @@ namespace SVGplay
             //return numofStitches.Zip(convertedStitchSymbols, (n, s) => new Stitch(s, n)).ToList();
         }
 
+        private List<string> ConvertChainsToVerticalChains(List<string> pListStitchSymbols)
+        {
+            var listStitchSymbols = pListStitchSymbols;
+
+            for (var i = 2; i < listStitchSymbols.Count; i++)
+            {
+                if (listStitchSymbols[i] != "ch")
+                {
+                    continue;
+                }
+                // chs immediate before or after a turn are vch
+                if (listStitchSymbols[i - 1] == "turn")
+                {
+                    listStitchSymbols[i] = "vch";
+                }
+                else if (listStitchSymbols[i + 1] == "turn")
+                {
+                    listStitchSymbols[i] = "vch";
+                }
+            }
+
+            return listStitchSymbols;
+        }
+
         public List<int> GetListofStitchCounts()
         {
-            return numofStitches;
+            return numOfStitches;
         }
     }
 }

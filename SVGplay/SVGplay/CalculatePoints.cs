@@ -14,7 +14,7 @@ namespace SVGplay
         public CalculatePoints()
         {
             var parameters = DrawingParameters.GetInstance();
-            widthOfStitchSymbols = parameters.stitchWidth;
+            widthOfStitchSymbols = parameters.StitchWidth;
         }
 
         private double DegreeToRadian(double angle)

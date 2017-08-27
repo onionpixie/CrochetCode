@@ -16,7 +16,7 @@ namespace SVGplay
         public PatternLayout()
         {
             var parameters = DrawingParameters.GetInstance();
-            minRowHeight = parameters.singleUnitHeight;
+            minRowHeight = parameters.SingleUnitHeight;
         }
 
         public float CalculateStartingYCoordinate(List<Stitch> stitchPattern)

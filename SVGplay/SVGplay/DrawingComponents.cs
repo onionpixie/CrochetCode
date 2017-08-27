@@ -15,13 +15,13 @@ namespace SVGplay
         float halfWidthOfStitchSymbols = widthOfStitchSymbols/2;
         private Drawing draw;
 
-        public DrawingComponents(Graphics pG, Pen pP)
+        public DrawingComponents()
         {
-            g = pG;
-            p = pP;
             var parameters = DrawingParameters.GetInstance();
-            widthOfStitchSymbols = parameters.stitchWidth;
-            draw = new Drawing(pG, pP);
+            g = parameters.Graphics;
+            p = parameters.Pen;
+            widthOfStitchSymbols = parameters.StitchWidth;
+            draw = new Drawing();
         }
 
         //public static void SetWidthOfStitchSymbols(float newWidth)
@@ -35,7 +35,7 @@ namespace SVGplay
         //}
         public void drawHorizontalLineOfStitchWidth (float x, float y, float pWidth)
         {
-            draw.drawLine(x, y, x + pWidth, y);
+            draw.DrawLine(x, y, x + pWidth, y);
         }
         public void drawTopLine(float x, float y)
         {
@@ -105,11 +105,11 @@ namespace SVGplay
         {
             return Math.PI * angle / 180.0;
         }
-        public void drawLine(PointF start, PointF end)
+        public void DrawLine(PointF start, PointF end)
         {
             g.DrawLine(p, start, end);
         }
-        public void drawEllipse(PointF topLeft, float pHeight, float pWidth)
+        public void DrawEllipse(PointF topLeft, float pHeight, float pWidth)
         {
             g.DrawEllipse(p, topLeft.X, topLeft.Y, pWidth, pHeight );
         }        

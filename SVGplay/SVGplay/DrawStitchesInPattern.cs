@@ -13,33 +13,26 @@ namespace SVGplay
         float y = 0;
         float currentY;
         int row = 0;
-        float x = 10.0f;
-        float stitchSpacing = 3.0f;
+        float x = 50.0f;
         double stitchRotation = 270;
-        DrawStitches draw;
-        //DrawingParameters parameters = DrawingParameters.GetInstance();
-        float widthOfStitchSymbols = DrawingParameters.GetInstance().stitchWidth;
+        float widthOfStitchSymbols = DrawingParameters.GetInstance().StitchWidth;
         List<float> rowSpacings = new List<float>();
-        bool isCircle = DrawingParameters.GetInstance().circle;
+        bool isCircle = DrawingParameters.GetInstance().Circle;
         float cumulativeRowHeight = 10;
         PointF startingCoords;
-        private double angleSpacing = 360/12;
+        private double angleSpacing = 360 / 12;
         List<PointF> topPoints = new List<PointF>();
-        int stitchNum = 0;
-        PointF nextCoords;
-        
-        public DrawStitchesInPattern(List<float> rowHeights, Graphics pG, Pen pP, float pY)
+
+        public DrawStitchesInPattern(List<float> rowHeights, float pY)
         {
             rowSpacings = rowHeights;
-            draw = new DrawStitches(pG, pP);
             y = pY;
             currentY = y;
             if (isCircle)
             {
                 x = pY;
-                startingCoords = new PointF(x, y+cumulativeRowHeight);
-                //topPoints.Add(startingCoords);
-                for (int i = 0; i < 12; i++)
+                startingCoords = new PointF(x, y + cumulativeRowHeight);
+                for (var i = 0; i < 12; i++)
                 {
                     if (i == 0)
                     {
@@ -48,14 +41,14 @@ namespace SVGplay
                     else
                     {
                         stitchRotation = stitchRotation + angleSpacing;
-                    }                   
+                    }
                     if (stitchRotation > 360)
                     {
                         stitchRotation = stitchRotation - 360;
                     }
-                    float TempX = x + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
-                    float TempY = y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
-                    PointF tempPoint = new PointF(TempX, TempY);
+                    var TempX = x + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+                    var TempY = y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+                    var tempPoint = new PointF(TempX, TempY);
                     topPoints.Add(tempPoint);
                 }
                 x = topPoints[0].X;
@@ -70,69 +63,98 @@ namespace SVGplay
             //var index = 0;
             //foreach (var stitch in stitchPattern)
             //{
-                
-                    //if (stitch.symbol == Stitch.StitchSymbol.vch)
-                    //{
-                    //    float tempY = y;
-                    //    float vertOffset = 0;
-                    //    vertOffset = vertOffset + i;
-                    //    tempY = y - (vertOffset * widthOfStitchSymbols);
-                    //    draw.DrawVerticalChainStitch(x, tempY);
 
-                    //    if (i == numStitches[i] - 1)
-                    //    {
-                    //        if (leftToRight)
-                    //        {
-                    //            x += (widthOfStitchSymbols + stitchSpacing);
-                    //        }
-                    //        else
-                    //        {
-                    //            x -= (widthOfStitchSymbols + stitchSpacing);
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                        drawStitch(stitchPattern, numStitches);
-                    //}
-                    
-                
-                //index++;
+            //if (stitch.symbol == Stitch.StitchSymbol.vch)
+            //{
+            //    float tempY = y;
+            //    float vertOffset = 0;
+            //    vertOffset = vertOffset + i;
+            //    tempY = y - (vertOffset * widthOfStitchSymbols);
+            //    draw.DrawVerticalChainStitch(x, tempY);
+
+            //    if (i == numStitches[i] - 1)
+            //    {
+            //        if (leftToRight)
+            //        {
+            //            x += (widthOfStitchSymbols + stitchSpacing);
+            //        }
+            //        else
+            //        {
+            //            x -= (widthOfStitchSymbols + stitchSpacing);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            DrawStitch(stitchPattern, numStitches);
+            //}
+
+
+            //index++;
             //}
         }
 
-        public void drawStitch(List<Stitch> pStitches, List<int> pNumStitches)
+        public void DrawStitch(List<Stitch> pStitches, List<int> pNumStitches)
         {
             var parameters = DrawingParameters.GetInstance();
             var index = 0;
-            foreach (var stitch in pStitches) 
+            foreach (var stitch in pStitches)
             {
                 if (stitch.heightMultiplier == 0)
                 {
                     if (leftToRight)
                     {
                         leftToRight = false;
-                        x += (widthOfStitchSymbols + parameters.stitchWidth - parameters.stitchSpacing);
+                        x -= (parameters.StitchWidth + parameters.StitchSpacing);
                     }
-
                     else
                     {
                         leftToRight = true;
-                        x = 10.0f;
+                        x = 50.0f;
                     }
+
                     y = currentY - (rowSpacings[row] + 7);
                     currentY = y;
                     row++;
+                    index++;
                 }
-            
-            else for (int i = 0; i < pNumStitches[index]; i++)
+                else if (stitch.symbol == Stitch.StitchSymbol.vch)
                 {
-                    stitch.Draw(x, y, parameters.stitchRotation);
-                    if (leftToRight)                    
-                        x += parameters.stitchSpacing + (parameters.stitchWidth * stitch.widthMultiplier);
+                    var tempY = y;
+                    for (var i = 0; i < pNumStitches[index]; i++)
+                    {
+                        
+                        stitch.Draw(x, tempY, parameters.StitchRotation);
+                        tempY -= stitch.heightMultiplier * parameters.SingleUnitHeight;
+                    }
+                    index++;
+                    if (leftToRight)
+                    {
+                        x += parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                    }
                     else
-                        x-= parameters.stitchSpacing + (parameters.stitchWidth * stitch.widthMultiplier);
+                    {
+                        x -= parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                    }
                 }
+                else
+                {
+                    for (var i = 0; i < pNumStitches[index]; i++)
+                    {
+                        stitch.Draw(x, y, parameters.StitchRotation);
+
+                        if (leftToRight)
+                        {
+                            x += parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                        }
+                        else
+                        {
+                            x -= parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                        }
+                    }
+
+                    index++;
+                }                
             }
         }
 
@@ -462,7 +484,7 @@ namespace SVGplay
         //                break;
         //            case Stitch.StitchSymbol.end:
         //                break;
-                    
+
         //            default:
         //                throw new Exception("Unknown stitch symbol is circle");
         //        }

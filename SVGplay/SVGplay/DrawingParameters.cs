@@ -20,15 +20,30 @@ namespace SVGplay
             }
 
             return theParameters;
-        }
+        }        
 
-        public float stitchWidth = 10.0f;
-        public float singleUnitHeight = 10.0f;
-        public bool circle = false;
-        public Graphics g { get; set; }
-        public Pen p = new Pen(Brushes.Black, 1);
-        public float rowSpacing = 5.0f;
-        public float stitchSpacing = 3.0f;
-        public double stitchRotation = 270;
+        private float stitchWidth = 10.0f;
+        public float StitchWidth { get => stitchWidth; }
+
+        private float singleUnitHeight = 10.0f;
+        public float SingleUnitHeight { get => singleUnitHeight; }
+        
+        private bool circle = false;
+        public bool Circle { get => circle; set => circle = value; }
+
+        public Graphics Graphics { get; set; }        
+
+        private Pen pen = new Pen(Brushes.Black, 1);
+        public Pen Pen { get => pen; set => pen = value; }
+        
+        private float rowSpacing = 5.0f;
+        public float RowSpacing { get => rowSpacing; }
+
+        private float stitchSpacing = 3.0f;
+        public float StitchSpacing { get => stitchSpacing;  }
+
+        private double stitchRotation = 270;
+        public double StitchRotation { get => stitchRotation; set => stitchRotation = value; }
+
     }
 }
