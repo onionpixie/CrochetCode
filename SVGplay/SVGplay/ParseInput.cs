@@ -7,47 +7,68 @@ namespace SVGplay
 {
     class ParseInput
     {
-        string input;
+        private string input;
+        private List<Stitch> listOfStitchesinPattern = new List<Stitch>();
+        private List<int> numOfStitches = new List<int>();
+
+        public string Input
+        {
+            get => input;
+            set
+            {
+                input = value;
+                GenerateStitchAndCountLists();
+            }
+        }
+        public List<Stitch> ListOfStitchesinPattern { get => listOfStitchesinPattern; set => listOfStitchesinPattern = value; }
+        public List<int> NumOfStitches { get => numOfStitches; set => numOfStitches = value; }
+
         public ParseInput(string stringToParse)
         {
-            input = stringToParse;
+            Input = stringToParse;
+        }      
+        
+        public void GenerateStitchAndCountLists()
+        {
+            var symbolList = SeperateInputIntoTwoLists();
+
+            symbolList = ConvertChainsToVerticalChains(symbolList);
+
+            ConvertListToStitches(symbolList);
         }
 
-        List<int> numOfStitches = new List<int>();
-
-        public List<Stitch> ReadInputIntoList()
+        public List<string> SeperateInputIntoTwoLists()
         {
             string[] separators = { ",", " " };
-            //char[] stitchSeparators = { ' ', ',' };
 
-            var stitchSymbols = input.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var stitchSymbols = Input.Split(separators, StringSplitOptions.RemoveEmptyEntries).ToList();
             
-            var listStitchSymbols = new List<string>();
+            var symbolList = new List<string>();
             foreach (var entry in stitchSymbols)
             {
                 if (int.TryParse(entry, out var num))
                 {
-                    numOfStitches.Add(num);
+                    NumOfStitches.Add(num);
                 }
                 else if (entry == "line" || entry == "skip" || entry == "turn" || entry == "end")
                 {
-                    numOfStitches.Add(1);
-                    listStitchSymbols.Add(entry);
+                    NumOfStitches.Add(1);
+                    symbolList.Add(entry);
                 }
                 else
                 {
-                    listStitchSymbols.Add(entry);
+                    symbolList.Add(entry);
                 }
             }
+            return symbolList;                      
+        }
 
-            listStitchSymbols = ConvertChainsToVerticalChains(listStitchSymbols);
-
-            List<Stitch.StitchSymbol> convertedStitchSymbols = listStitchSymbols.ConvertAll(delegate (string x)
+        private void ConvertListToStitches(List<string> symbolList)
+        {
+            List<Stitch.StitchSymbol> convertedStitchSymbols = symbolList.ConvertAll(delegate (string x)
             {
                 return (Stitch.StitchSymbol)Enum.Parse(typeof(Stitch.StitchSymbol), x);
             });
-
-            List<Stitch> ListOfStitchesinPattern = new List<Stitch>(); 
 
             foreach (var symbol in convertedStitchSymbols)
             {
@@ -80,10 +101,7 @@ namespace SVGplay
                         throw new Exception("unexpected stitch symbol");
                 }
                 ListOfStitchesinPattern.Add(stitch);
-
             }
-            return ListOfStitchesinPattern;
-            //return numofStitches.Zip(convertedStitchSymbols, (n, s) => new Stitch(s, n)).ToList();
         }
 
         private List<string> ConvertChainsToVerticalChains(List<string> pListStitchSymbols)
@@ -108,11 +126,6 @@ namespace SVGplay
             }
 
             return listStitchSymbols;
-        }
-
-        public List<int> GetListofStitchCounts()
-        {
-            return numOfStitches;
         }
     }
 }

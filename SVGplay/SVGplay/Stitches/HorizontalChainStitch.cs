@@ -7,7 +7,7 @@
         public override void Draw(float x, float y, double pAngle)
         {
             var draw = new DrawStitches();
-            draw.DrawHorizontalChainStitch(x, y, pAngle, heightMultiplier);
+            draw.DrawHorizontalChainStitch(x, y, pAngle, HeightMultiplier);
         }
     }
 }

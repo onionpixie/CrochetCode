@@ -9,19 +9,24 @@ namespace SVGplay
 {
     public abstract class Stitch
     {
+        private StitchSymbol symbol;
+        private float heightMultiplier;
+        private float widthMultiplier;
 
-        public StitchSymbol symbol;        
-        public float heightMultiplier;
-        public float widthMultiplier;
+        public StitchSymbol Symbol { get => symbol; private set => symbol = value; }
+        public float HeightMultiplier { get => heightMultiplier; private set => heightMultiplier = value; }
+        public float WidthMultiplier { get => widthMultiplier; private set => widthMultiplier = value; }
 
         public Stitch(StitchSymbol pSymbol,
                       float pHeightMultiplier,
                       float pWidthMultiplier)
         {
-            symbol = pSymbol;
-            heightMultiplier = pHeightMultiplier;
-            widthMultiplier = pWidthMultiplier;
+            Symbol = pSymbol;
+            HeightMultiplier = pHeightMultiplier;
+            WidthMultiplier = pWidthMultiplier;
         }
+
+        
 
         public abstract void Draw(float x, float y, double pAngle);
 

@@ -7,7 +7,7 @@
         public override void Draw(float x, float y, double pAngle)
         {
             var draw = new DrawStitches();
-            draw.DrawHalfDoubleCrochet(x, y, pAngle, heightMultiplier);
+            draw.DrawHalfDoubleCrochet(x, y, pAngle, HeightMultiplier);
         }
     }
 }

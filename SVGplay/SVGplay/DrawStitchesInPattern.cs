@@ -10,51 +10,59 @@ namespace SVGplay
     class DrawStitchesInPattern
     {
         bool leftToRight = true;
-        float y = 0;
+        
         float currentY;
         int row = 0;
-        float x = 50.0f;
-        double stitchRotation = 270;
-        float widthOfStitchSymbols = DrawingParameters.GetInstance().StitchWidth;
-        List<float> rowSpacings = new List<float>();
+        float x = 50.0f;        
+        
         bool isCircle = DrawingParameters.GetInstance().Circle;
         float cumulativeRowHeight = 10;
         PointF startingCoords;
         private double angleSpacing = 360 / 12;
         List<PointF> topPoints = new List<PointF>();
 
-        public DrawStitchesInPattern(List<float> rowHeights, float pY)
+        private DrawingParameters parameters;
+
+        private float y = 0;
+        private List<float> rowHeights = new List<float>();
+
+        public List<float> RowHeights { get => rowHeights; set => rowHeights = value; }
+        public float Y { get => y; set => y = value; }
+        public DrawingParameters Parameters { get => parameters; set => parameters = value; }
+
+        public DrawStitchesInPattern(List<float> pRowHeights, float pY)
         {
-            rowSpacings = rowHeights;
-            y = pY;
-            currentY = y;
-            if (isCircle)
-            {
-                x = pY;
-                startingCoords = new PointF(x, y + cumulativeRowHeight);
-                for (var i = 0; i < 12; i++)
-                {
-                    if (i == 0)
-                    {
-                        stitchRotation = 270;
-                    }
-                    else
-                    {
-                        stitchRotation = stitchRotation + angleSpacing;
-                    }
-                    if (stitchRotation > 360)
-                    {
-                        stitchRotation = stitchRotation - 360;
-                    }
-                    var TempX = x + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
-                    var TempY = y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
-                    var tempPoint = new PointF(TempX, TempY);
-                    topPoints.Add(tempPoint);
-                }
-                x = topPoints[0].X;
-                y = topPoints[0].Y;
-                stitchRotation = 270;
-            }
+            RowHeights = pRowHeights;
+            Y = pY;
+            currentY = Y;
+            Parameters = DrawingParameters.GetInstance();
+            //if (isCircle)
+            //{
+            //    x = pY;
+            //    startingCoords = new PointF(x, y + cumulativeRowHeight);
+            //    for (var i = 0; i < 12; i++)
+            //    {
+            //        if (i == 0)
+            //        {
+            //            stitchRotation = 270;
+            //        }
+            //        else
+            //        {
+            //            stitchRotation = stitchRotation + angleSpacing;
+            //        }
+            //        if (stitchRotation > 360)
+            //        {
+            //            stitchRotation = stitchRotation - 360;
+            //        }
+            //        var TempX = x + (cumulativeRowHeight * (float)Math.Cos(DegreeToRadian(stitchRotation)));
+            //        var TempY = y + (cumulativeRowHeight * (float)Math.Sin(DegreeToRadian(stitchRotation)));
+            //        var tempPoint = new PointF(TempX, TempY);
+            //        topPoints.Add(tempPoint);
+            //    }
+            //    x = topPoints[0].X;
+            //    y = topPoints[0].Y;
+            //    stitchRotation = 270;
+            //}
 
         }
 
@@ -96,16 +104,16 @@ namespace SVGplay
 
         public void DrawStitch(List<Stitch> pStitches, List<int> pNumStitches)
         {
-            var parameters = DrawingParameters.GetInstance();
+            
             var index = 0;
             foreach (var stitch in pStitches)
             {
-                if (stitch.heightMultiplier == 0)
+                if (stitch.HeightMultiplier == 0)
                 {
                     if (leftToRight)
                     {
                         leftToRight = false;
-                        x -= (parameters.StitchWidth + parameters.StitchSpacing);
+                        x -= (Parameters.StitchWidth + Parameters.StitchSpacing);
                     }
                     else
                     {
@@ -113,43 +121,43 @@ namespace SVGplay
                         x = 50.0f;
                     }
 
-                    y = currentY - (rowSpacings[row] + 7);
-                    currentY = y;
+                    Y = currentY - (RowHeights[row] + 7);
+                    currentY = Y;
                     row++;
                     index++;
                 }
-                else if (stitch.symbol == Stitch.StitchSymbol.vch)
+                else if (stitch.Symbol == Stitch.StitchSymbol.vch)
                 {
-                    var tempY = y;
+                    var tempY = Y;
                     for (var i = 0; i < pNumStitches[index]; i++)
                     {
                         
-                        stitch.Draw(x, tempY, parameters.StitchRotation);
-                        tempY -= stitch.heightMultiplier * parameters.SingleUnitHeight;
+                        stitch.Draw(x, tempY, Parameters.StitchRotation);
+                        tempY -= stitch.HeightMultiplier * Parameters.SingleUnitHeight;
                     }
                     index++;
                     if (leftToRight)
                     {
-                        x += parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                        x += Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
                     }
                     else
                     {
-                        x -= parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                        x -= Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
                     }
                 }
                 else
                 {
                     for (var i = 0; i < pNumStitches[index]; i++)
                     {
-                        stitch.Draw(x, y, parameters.StitchRotation);
+                        stitch.Draw(x, Y, Parameters.StitchRotation);
 
                         if (leftToRight)
                         {
-                            x += parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                            x += Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
                         }
                         else
                         {
-                            x -= parameters.StitchSpacing + (parameters.StitchWidth * stitch.widthMultiplier);
+                            x -= Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
                         }
                     }
 
@@ -496,6 +504,9 @@ namespace SVGplay
             return Math.PI * angle / 180.0;
         }
         const double Rad2Deg = 180.0 / Math.PI;
+
+        
+
         private double Angle(PointF start, PointF end)
         {
             return Math.Atan2(start.Y - end.Y, end.X - start.X) * Rad2Deg;

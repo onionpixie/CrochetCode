@@ -21,7 +21,6 @@ namespace SVGplay
         public float widthOfStitchSymbols = 10.0f;
         public float minHeigthOfStitchSymbols = 16.0f;
         public float lineHeigth;
-        List<float> rowHeigths = new List<float>();
 
         public Form1()
         {
@@ -35,14 +34,12 @@ namespace SVGplay
             //parseInput = new SVGplay.ParseInput(" 10 dc, turn, 10 dc, turn, 10 dc, end");
             //parseInput = new SVGplay.ParseInput(" 12 hdc, line, 12 dcinc, line, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, line, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc");
             //parseInput = new SVGplay.ParseInput(" 12 hdc, line, 12 hdcinc, line, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, line, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc");
-            var stitchPattern = parseInput.ReadInputIntoList();
-            var stitchCounts = parseInput.GetListofStitchCounts();        
+      
             var patternLayout = new PatternLayout();
-            patternLayout.CalculateRowHeigths(stitchPattern);
-            startingY = patternLayout.CalculateStartingYCoordinate(stitchPattern);
-            rowHeigths = patternLayout.GetRowHeightList();
-            patternDraw = new DrawStitchesInPattern(rowHeigths, startingY);
-            patternDraw.ChartGo(stitchPattern, stitchCounts);
+            patternLayout.CalculateRowHeigths(parseInput.ListOfStitchesinPattern);
+            patternLayout.CalculateStartingYCoordinate(parseInput.ListOfStitchesinPattern);
+            patternDraw = new DrawStitchesInPattern(patternLayout.RowHeigths, patternLayout.StartingY);
+            patternDraw.ChartGo(parseInput.ListOfStitchesinPattern, parseInput.NumOfStitches);
         }
         private void Form1_Load(object sender, EventArgs e)
         {

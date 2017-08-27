@@ -92,7 +92,7 @@ namespace SVGplay
 
         public void DrawTopLine(float x, float y, double pAngle)
         {
-            PointF topLineStartPoint = new PointF(x, y);
+            var topLineStartPoint = new PointF(x, y);
             PointF topLineEndPoint = calcPoints.CalculateEndPoint(topLineStartPoint, StitchWidth, pAngle + 90);
             draw.DrawLine(topLineStartPoint, topLineEndPoint);
         }
@@ -217,7 +217,7 @@ namespace SVGplay
             g.DrawArc(p, x, y, 5, 3, 0, 180);
         }
 
-        public void drawBackLoopOnly(float x, float y)
+        public void DrawBackLoopOnly(float x, float y)
         {
             g.DrawArc(p, x, y, 5, 3, 0, -180);
         }
@@ -225,43 +225,43 @@ namespace SVGplay
         public void DrawFrontPostDoubleCrochet(float x, float y)
         {
             var stitchHeigth = minRowHeight * 3;
-            draw.drawVerticalMiddleLine(x, y, stitchHeigth);
-            draw.drawTopLine(x, y);
-            draw.drawCentralDiagLine(x, y, stitchHeigth);
+            draw.DrawVerticalMiddleLine(x, y, stitchHeigth);
+            draw.DrawTopLine(x, y);
+            draw.DrawCentralDiagLine(x, y, stitchHeigth);
             g.DrawArc(p, x, (y + stitchHeigth), StitchWidth, (minRowHeight / 2), 270, 270);
         }
 
         public void DrawBackPostDoubleCrochet(float x, float y)
         {
             var stitchHeigth = minRowHeight * 3;
-            draw.drawVerticalMiddleLine(x, y, stitchHeigth);
-            draw.drawTopLine(x, y);
-            draw.drawCentralDiagLine(x, y, stitchHeigth);
+            draw.DrawVerticalMiddleLine(x, y, stitchHeigth);
+            draw.DrawTopLine(x, y);
+            draw.DrawCentralDiagLine(x, y, stitchHeigth);
             g.DrawArc(p, x, (y + stitchHeigth), StitchWidth, (minRowHeight / 2), 270, -270);
         }
 
         public void DrawDiagStitch(float x, float y)
         {
-            draw.drawDiagonalCenterLineToLeftStitch(x, y, minRowHeight);
-            draw.drawDiagonalCenterLineToRightStitch(x, y, minRowHeight);
-            draw.drawTopLine(x, y);
+            draw.DrawDiagonalCenterLineToLeftStitch(x, y, minRowHeight);
+            draw.DrawDiagonalCenterLineToRightStitch(x, y, minRowHeight);
+            draw.DrawTopLine(x, y);
         }
 
         public void DrawThreeLoopPuffStitch(float x, float y, int heightMultiple)
         {
             var pHeigth = minRowHeight * heightMultiple;
-            draw.drawTopLine(x, y);
-            draw.drawVerticalMiddleLine(x, y, pHeigth);
-            draw.drawOuterArcs(x, y, pHeigth);
+            draw.DrawTopLine(x, y);
+            draw.DrawVerticalMiddleLine(x, y, pHeigth);
+            draw.DrawOuterArcs(x, y, pHeigth);
         }
 
         public void DrawFiveLoopPuffStitch(float x, float y, int heightMultiple)
         {
             var pHeight = minRowHeight * heightMultiple;
-            draw.drawTopLine(x, y);
-            draw.drawVerticalMiddleLine(x, y, pHeight);
-            draw.drawOuterArcs(x, y, pHeight);
-            draw.drawInnerArcs(x, y, pHeight);
+            draw.DrawTopLine(x, y);
+            draw.DrawVerticalMiddleLine(x, y, pHeight);
+            draw.DrawOuterArcs(x, y, pHeight);
+            draw.DrawInnerArcs(x, y, pHeight);
         }
     }
 }

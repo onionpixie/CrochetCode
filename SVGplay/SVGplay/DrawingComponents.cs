@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SVGplay
-{   
+{
     class DrawingComponents
     {
         Graphics g;
@@ -24,81 +20,71 @@ namespace SVGplay
             draw = new Drawing();
         }
 
-        //public static void SetWidthOfStitchSymbols(float newWidth)
-        //{
-        //    widthOfStitchSymbols = newWidth;
-        //}
-
-        //public float GetWidthOfStitchSymbols()
-        //{
-        //    return widthOfStitchSymbols;
-        //}
-        public void drawHorizontalLineOfStitchWidth (float x, float y, float pWidth)
+        public void DrawHorizontalLineOfStitchWidth (float x, float y, float pWidth)
         {
             draw.DrawLine(x, y, x + pWidth, y);
         }
-        public void drawTopLine(float x, float y)
+        public void DrawTopLine(float x, float y)
         {
             g.DrawLine(p, new PointF(x, y), new PointF((x + widthOfStitchSymbols), y));
         }
-        public void drawHorizontalMiddleLine(float x, float y, float pHeight)
+        public void DrawHorizontalMiddleLine(float x, float y, float pHeight)
         {
             g.DrawLine(p, new PointF(x, (y + (pHeight / 2))), new PointF(x + widthOfStitchSymbols, (y + (pHeight / 2))));
         }
-        public PointF drawVerticalMiddleLine(float x, float y, float pHeight)
+        public PointF DrawVerticalMiddleLine(float x, float y, float pHeight)
         {
-            float x1 = x + halfWidthOfStitchSymbols;
-            float y2 = y + pHeight;
+            var x1 = x + halfWidthOfStitchSymbols;
+            var y2 = y + pHeight;
             g.DrawLine(p, new PointF(x1, y), new PointF(x1, y2));
-            PointF midPoint = new PointF((x1 + x1) / 2, (y + y2) / 2);
+            var midPoint = new PointF((x1 + x1) / 2, (y + y2) / 2);
             return midPoint;
         }
 
-        public void drawCentralDiagLine(float x, float y, float pHeight)
+        public void DrawCentralDiagLine(float x, float y, float pHeight)
         {
-            float firstQuarterWidth = widthOfStitchSymbols * 0.3f;
-            float thirdQuarterWidth = widthOfStitchSymbols * 0.7f;
-            float twoFifthsY = pHeight * 0.4f;
-            float threeFifthsY = pHeight * 0.5f;
+            var firstQuarterWidth = widthOfStitchSymbols * 0.3f;
+            var thirdQuarterWidth = widthOfStitchSymbols * 0.7f;
+            var twoFifthsY = pHeight * 0.4f;
+            var threeFifthsY = pHeight * 0.5f;
             g.DrawLine(p, new PointF(x + firstQuarterWidth, y + twoFifthsY), new PointF(x + thirdQuarterWidth, y + threeFifthsY));
         }
-        public void drawCentralDiagLine(PointF center, float pHeight)
+        public void DrawCentralDiagLine(PointF center, float pHeight)
         {
-            float length = widthOfStitchSymbols * 0.5f;
-            float halfLength = length / 2;
-            PointF startingPoint = new PointF((center.X - halfLength), center.Y - (halfLength*0.9f));
-            PointF endPoint = new PointF((center.X + halfLength), center.Y + (halfLength * 0.9f));
+            var length = widthOfStitchSymbols * 0.5f;
+            var halfLength = length / 2;
+            var startingPoint = new PointF((center.X - halfLength), center.Y - (halfLength*0.9f));
+            var endPoint = new PointF((center.X + halfLength), center.Y + (halfLength * 0.9f));
             g.DrawLine(p, startingPoint, endPoint);
         }
 
-        public void drawOuterArcs(float x, float y, float pHeight)
+        public void DrawOuterArcs(float x, float y, float pHeight)
         {
             g.DrawArc(p, x, y + 1, widthOfStitchSymbols + 1.5f, pHeight - 1, 270, 180);
             g.DrawArc(p, x - 1.5f, y + 1, widthOfStitchSymbols + 1.5f, pHeight - 1, 270, -180);
         }
-        public void drawInnerArcs(float x, float y, float pHeight)
+        public void DrawInnerArcs(float x, float y, float pHeight)
         {
             g.DrawArc(p, x + 3, y + 1, widthOfStitchSymbols * 0.5f, pHeight - 1, 270, 180);
             g.DrawArc(p, x + 2, y + 1, widthOfStitchSymbols * 0.5f, pHeight - 1, 270, -180);
         }
-        public PointF drawDiagonalCenterLineToRightStitch(float x, float y, float pHeight)
+        public PointF DrawDiagonalCenterLineToRightStitch(float x, float y, float pHeight)
         {
-            //float halfWidthOfStitchSymbols = widthOfStitchSymbols / 2;
-            float x1 = x + halfWidthOfStitchSymbols;           
-            float y2 = y + pHeight;
-            float centerOfAdjacentStitch = widthOfStitchSymbols + halfWidthOfStitchSymbols;
-            float x2 = x + centerOfAdjacentStitch;
+            var x1 = x + halfWidthOfStitchSymbols;
+            var y2 = y + pHeight;
+            var centerOfAdjacentStitch = widthOfStitchSymbols + halfWidthOfStitchSymbols;
+            var x2 = x + centerOfAdjacentStitch;
             g.DrawLine(p, new PointF(x1, y), new PointF(x2, y2));
-            PointF midPoint = new PointF((x1 + x2) / 2, (y + y2) / 2);
+            var midPoint = new PointF((x1 + x2) / 2, (y + y2) / 2);
             return midPoint;
         }
-        public PointF drawDiagonalCenterLineToLeftStitch(float x, float y, float pHeight)
+        public PointF DrawDiagonalCenterLineToLeftStitch(float x, float y, float pHeight)
         {
-            float x1 = x + halfWidthOfStitchSymbols;
-            float x2 = x - halfWidthOfStitchSymbols;
-            float y2 = y + pHeight;
+            var x1 = x + halfWidthOfStitchSymbols;
+            var x2 = x - halfWidthOfStitchSymbols;
+            var y2 = y + pHeight;
             g.DrawLine(p, new PointF(x1, y), new PointF((x2), y2));
-            PointF midPoint = new PointF((x1 + x2) / 2, (y + y2) / 2);
+            var midPoint = new PointF((x1 + x2) / 2, (y + y2) / 2);
             return midPoint;
         }
         private double DegreeToRadian(double angle)
