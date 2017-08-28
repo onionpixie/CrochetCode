@@ -60,6 +60,10 @@ namespace SVGplay
                     symbolList.Add(entry);
                 }
             }
+            if (symbolList[symbolList.Count-1] != "line" || symbolList[symbolList.Count-1] != "turn" || symbolList[symbolList.Count-1] != "end")
+            {
+                symbolList.Add("line");
+            }
             return symbolList;                      
         }
 
@@ -96,6 +100,15 @@ namespace SVGplay
                     case Stitch.StitchSymbol.line:
                     case Stitch.StitchSymbol.turn:
                         stitch = new LineCrochetStitch();
+                        break;
+                    case Stitch.StitchSymbol.flsc:
+                        stitch = new FrontLoopSingleCrochet();
+                        break;
+                    case Stitch.StitchSymbol.blsc:
+                        stitch = new BackLoopSingleCrochet();
+                        break;
+                    case Stitch.StitchSymbol.fldc:
+                        stitch = new FrontLoopDoubleCrochet();
                         break;
                     default:
                         throw new Exception("unexpected stitch symbol");

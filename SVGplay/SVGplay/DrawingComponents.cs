@@ -9,7 +9,6 @@ namespace SVGplay
         Pen p;
         static float widthOfStitchSymbols;
         float halfWidthOfStitchSymbols = widthOfStitchSymbols/2;
-        private Drawing draw;
 
         public DrawingComponents()
         {
@@ -17,12 +16,11 @@ namespace SVGplay
             g = parameters.Graphics;
             p = parameters.Pen;
             widthOfStitchSymbols = parameters.StitchWidth;
-            draw = new Drawing();
         }
 
         public void DrawHorizontalLineOfStitchWidth (float x, float y, float pWidth)
         {
-            draw.DrawLine(x, y, x + pWidth, y);
+            g.DrawLine(p, x, y, x + pWidth, y);
         }
         public void DrawTopLine(float x, float y)
         {

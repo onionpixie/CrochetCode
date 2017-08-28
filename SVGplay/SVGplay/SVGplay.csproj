@@ -47,8 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatePoints.cs" />
+    <Compile Include="Stitches\FrontLoopDoubleCrochet.cs" />
     <Compile Include="Stitches\DoubleCrochet.cs" />
-    <Compile Include="Drawing.cs" />
     <Compile Include="DrawingComponents.cs" />
     <Compile Include="DrawingParameters.cs" />
     <Compile Include="DrawStitches.cs" />
@@ -59,12 +59,14 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stitches\BackLoopSingleCrochet.cs" />
     <Compile Include="Stitches\HalfDoubleCrochet.cs" />
     <Compile Include="Stitches\LineCrochetStitch.cs" />
     <Compile Include="ParseInput.cs" />
     <Compile Include="PatternLayout.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stitches\FrontLoopSingleCrochet.cs" />
     <Compile Include="Stitches\SingleCrochet.cs" />
     <Compile Include="Stitch.cs" />
     <Compile Include="Stitches\DoubleTrebleCrochet.cs" />

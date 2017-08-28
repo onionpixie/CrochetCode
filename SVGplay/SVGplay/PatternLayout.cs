@@ -40,10 +40,11 @@ namespace SVGplay
                     RowHeigths.Add(lineHeight);
                     lineHeight = 0;
                 }
+
                 if (lineHeight < stitch.HeightMultiplier * minRowHeight)
                 {
                     lineHeight = stitch.HeightMultiplier * minRowHeight;
-                }
+                }                
             }
         }
     }

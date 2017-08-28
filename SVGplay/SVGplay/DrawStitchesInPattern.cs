@@ -12,13 +12,13 @@ namespace SVGplay
         bool leftToRight = true;
         
         float currentY;
-        int row = 0;
+        int currentRow = 0;
         float x = 50.0f;        
         
         bool isCircle = DrawingParameters.GetInstance().Circle;
-        float cumulativeRowHeight = 10;
-        PointF startingCoords;
-        private double angleSpacing = 360 / 12;
+        //float cumulativeRowHeight = 10;
+        //PointF startingCoords;
+        //private double angleSpacing = 360 / 12;
         List<PointF> topPoints = new List<PointF>();
 
         private DrawingParameters parameters;
@@ -33,6 +33,7 @@ namespace SVGplay
         public DrawStitchesInPattern(List<float> pRowHeights, float pY)
         {
             RowHeights = pRowHeights;
+
             Y = pY;
             currentY = Y;
             Parameters = DrawingParameters.GetInstance();
@@ -64,105 +65,64 @@ namespace SVGplay
             //    stitchRotation = 270;
             //}
 
-        }
+        }        
 
-        public void ChartGo(List<Stitch> stitchPattern, List<int> numStitches)
+        public void DrawChart(List<Stitch> pStitches, List<int> pNumStitches)
         {
-            //var index = 0;
-            //foreach (var stitch in stitchPattern)
-            //{
-
-            //if (stitch.symbol == Stitch.StitchSymbol.vch)
-            //{
-            //    float tempY = y;
-            //    float vertOffset = 0;
-            //    vertOffset = vertOffset + i;
-            //    tempY = y - (vertOffset * widthOfStitchSymbols);
-            //    draw.DrawVerticalChainStitch(x, tempY);
-
-            //    if (i == numStitches[i] - 1)
-            //    {
-            //        if (leftToRight)
-            //        {
-            //            x += (widthOfStitchSymbols + stitchSpacing);
-            //        }
-            //        else
-            //        {
-            //            x -= (widthOfStitchSymbols + stitchSpacing);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            DrawStitch(stitchPattern, numStitches);
-            //}
-
-
-            //index++;
-            //}
-        }
-
-        public void DrawStitch(List<Stitch> pStitches, List<int> pNumStitches)
-        {
-            
-            var index = 0;
-            foreach (var stitch in pStitches)
+            for (var i = 0; i < pStitches.Count; i++)
             {
-                if (stitch.HeightMultiplier == 0)
+                if (pStitches[i].HeightMultiplier == 0)
                 {
-                    if (leftToRight)
-                    {
-                        leftToRight = false;
-                        x -= (Parameters.StitchWidth + Parameters.StitchSpacing);
-                    }
-                    else
-                    {
-                        leftToRight = true;
-                        x = 50.0f;
-                    }
-
-                    Y = currentY - (RowHeights[row] + 7);
-                    currentY = Y;
-                    row++;
-                    index++;
+                    InsertTurn();                   
                 }
-                else if (stitch.Symbol == Stitch.StitchSymbol.vch)
+                else if (pStitches[i].Symbol == Stitch.StitchSymbol.vch)
                 {
                     var tempY = Y;
-                    for (var i = 0; i < pNumStitches[index]; i++)
+                    for (var j = 0; j < pNumStitches[i]; j++)
                     {
-                        
-                        stitch.Draw(x, tempY, Parameters.StitchRotation);
-                        tempY -= stitch.HeightMultiplier * Parameters.SingleUnitHeight;
+                        pStitches[i].Draw(x, tempY, Parameters.StitchRotation);
+                        tempY -= pStitches[i].HeightMultiplier * Parameters.SingleUnitHeight;
                     }
-                    index++;
-                    if (leftToRight)
-                    {
-                        x += Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
-                    }
-                    else
-                    {
-                        x -= Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
-                    }
+                    SetNewX(pStitches[i].WidthMultiplier);
                 }
                 else
                 {
-                    for (var i = 0; i < pNumStitches[index]; i++)
+                    for (var j = 0; j < pNumStitches[i]; j++)
                     {
-                        stitch.Draw(x, Y, Parameters.StitchRotation);
+                        pStitches[i].Draw(x, Y, Parameters.StitchRotation);
 
-                        if (leftToRight)
-                        {
-                            x += Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
-                        }
-                        else
-                        {
-                            x -= Parameters.StitchSpacing + (Parameters.StitchWidth * stitch.WidthMultiplier);
-                        }
+                        SetNewX(pStitches[i].WidthMultiplier);
                     }
+                }
+            }            
+        }
 
-                    index++;
-                }                
+        private void InsertTurn()
+        {
+            if (leftToRight)
+            {
+                leftToRight = false;
+                x -= (Parameters.StitchWidth + Parameters.StitchSpacing);
+            }
+            else
+            {
+                leftToRight = true;
+                x = parameters.XIndentForRows;
+            }
+
+            Y -= (RowHeights[currentRow] + 7);
+            currentRow++;
+        }
+
+        private void SetNewX(float widthMultipleer)
+        {
+            if (leftToRight)
+            {
+                x += Parameters.StitchSpacing + (Parameters.StitchWidth * widthMultipleer);
+            }
+            else
+            {
+                x -= Parameters.StitchSpacing + (Parameters.StitchWidth * widthMultipleer);
             }
         }
 

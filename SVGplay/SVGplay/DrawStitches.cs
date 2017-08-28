@@ -4,19 +4,20 @@ using System.Drawing;
 namespace SVGplay
 {
     class DrawStitches
-    {              
-        float minRowHeight;
+    {        
+        private DrawingComponents draw;
+        
+        private float minRowHeight;
         private Graphics g;
         private Pen p;
-        private DrawingComponents draw;
         private CalculatePoints calcPoints;
-
         private float rowSpacing;
-        private float stitchWidth;
-        private float halfWidth;
-        private float quarterWidth;
 
         
+
+        private float stitchWidth;
+        private float halfWidth;
+        private float quarterWidth;               
 
         public float StitchWidth
         {
@@ -33,19 +34,23 @@ namespace SVGplay
         public float HalfWidth { get => halfWidth; set => halfWidth = value; }
         public float QuarterWidth { get => quarterWidth; set => quarterWidth = value; }
         public float RowSpacing { get => rowSpacing; set => rowSpacing = value; }
+        internal CalculatePoints CalcPoints { get => calcPoints; set => calcPoints = value; }
+        public float MinRowHeight { get => minRowHeight; set => minRowHeight = value; }
+        public Graphics G { get => g; set => g = value; }
+        public Pen P { get => p; set => p = value; }
 
         public DrawStitches()
         {
             var parameters = DrawingParameters.GetInstance();
-            g = parameters.Graphics;
-            p = parameters.Pen;
+            G = parameters.Graphics;
+            P = parameters.Pen;
             StitchWidth = parameters.StitchWidth;
-            minRowHeight = parameters.SingleUnitHeight;
+            MinRowHeight = parameters.SingleUnitHeight;
             RowSpacing = parameters.RowSpacing;
 
             draw = new DrawingComponents();
 
-            calcPoints = new CalculatePoints();
+            CalcPoints = new CalculatePoints();
         }       
 
         public void DrawSingleCrochet(float x, float y, double pAngle, float pHeightMultiplier)
@@ -54,10 +59,58 @@ namespace SVGplay
 
             PointF verticalLineEndPoint = DrawVerticalLine(verticalLineStartPoint, pHeightMultiplier, pAngle);         
 
-            PointF verticalLineMidPoint = calcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
 
             DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, HalfWidth);
-        }        
+        }
+
+        internal void DrawFrontLoopSingleCrochet(float x, float y, double pAngle, float pHeightMultiplier)
+        {
+            var verticalLineStartPoint = new PointF(x, y); //this is the bottom of the stitch, line will be drawn upwards
+
+            PointF verticalLineEndPoint = DrawVerticalLine(verticalLineStartPoint, pHeightMultiplier, pAngle);
+
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+
+            DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, HalfWidth);
+
+            DrawFrontLoopFromCenterPoint(verticalLineStartPoint);
+        }
+
+        internal void DrawBackLoopSingleCrochet(float x, float y, double pAngle, float pHeightMultiplier)
+        {
+            var verticalLineStartPoint = new PointF(x, y); //this is the bottom of the stitch, line will be drawn upwards
+
+            PointF verticalLineEndPoint = DrawVerticalLine(verticalLineStartPoint, pHeightMultiplier, pAngle);
+
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+
+            DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, HalfWidth);
+
+            DrawBackLoopFromCenterPoint(verticalLineStartPoint);
+        }
+
+        private void DrawFrontLoopFromCenterPoint(PointF verticalLineStartPoint)
+        {
+            var startX = verticalLineStartPoint.X - HalfWidth;
+            var startY = verticalLineStartPoint.Y - (minRowHeight * 0.5f);
+
+            G.DrawArc(P, startX, startY, StitchWidth, minRowHeight * 0.5f, 0, 180);
+        }
+
+        private void DrawBackLoopFromCenterPoint(PointF verticalLineStartPoint)
+        {
+            var startX = verticalLineStartPoint.X - HalfWidth;
+            var startY = verticalLineStartPoint.Y ;
+
+            G.DrawArc(P, startX, startY, StitchWidth, minRowHeight * 0.5f, 0, -180);
+        }
+
+        //public void DrawFrontLoopOnly(float x, float y)
+        //{
+        //    G.DrawArc(P, x, y, 5, 3, 0, 180);
+        //}
+
 
         public PointF DrawHalfDoubleCrochet(float x, float y, double pAngle, float pHeightMultiplier)
         {
@@ -67,14 +120,14 @@ namespace SVGplay
 
             DrawHorizontalLineFromMidPoint(verticalLineEndPoint, pAngle, HalfWidth);
 
-            PointF pointForNextStitch = calcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
+            PointF pointForNextStitch = CalcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
 
             return pointForNextStitch;
         }
 
         public PointF DrawVerticalLine(PointF startPoint, float heightMultiplier, double pAngle) // return end point of line.
         {
-            PointF verticalLineEndPoint = calcPoints.CalculateEndPoint(startPoint, heightMultiplier*minRowHeight, pAngle); // find end point of line
+            PointF verticalLineEndPoint = CalcPoints.CalculateEndPoint(startPoint, heightMultiplier*MinRowHeight, pAngle); // find end point of line
 
             draw.DrawLine(startPoint, verticalLineEndPoint); // draw vertical line
 
@@ -83,25 +136,18 @@ namespace SVGplay
 
         public void DrawHorizontalLineFromMidPoint(PointF midPoint, double pAngle, float length)
         {
-            PointF horizontalLineEndPoint = calcPoints.CalculateEndPoint(midPoint, length, pAngle + 90);
+            PointF horizontalLineEndPoint = CalcPoints.CalculateEndPoint(midPoint, length, pAngle + 90);
 
-            PointF horizontalLineOtherEndPoint = calcPoints.CalculateEndPoint(midPoint, length, pAngle - 90);
+            PointF horizontalLineOtherEndPoint = CalcPoints.CalculateEndPoint(midPoint, length, pAngle - 90);
 
             draw.DrawLine(horizontalLineOtherEndPoint, horizontalLineEndPoint); // draw horizontal line
         }
 
-        public void DrawTopLine(float x, float y, double pAngle)
-        {
-            var topLineStartPoint = new PointF(x, y);
-            PointF topLineEndPoint = calcPoints.CalculateEndPoint(topLineStartPoint, StitchWidth, pAngle + 90);
-            draw.DrawLine(topLineStartPoint, topLineEndPoint);
-        }
-
-        public void DrawTopLine(float x, float y, double pAngle, int widthMultiplier)
+        public void DrawHorizontalLine(float x, float y, double pAngle, int widthMultiplier)
         {
             var topLineStartPoint = new PointF(x, y);
 
-            PointF topLineEndPoint = calcPoints.CalculateEndPoint(topLineStartPoint, (StitchWidth* widthMultiplier), pAngle + 90);
+            PointF topLineEndPoint = CalcPoints.CalculateEndPoint(topLineStartPoint, (StitchWidth* widthMultiplier), pAngle + 90);
 
             draw.DrawLine(topLineStartPoint, topLineEndPoint);
         }
@@ -114,13 +160,32 @@ namespace SVGplay
 
             DrawHorizontalLineFromMidPoint(verticalLineEndPoint, pAngle, HalfWidth); // draw top line
 
-            PointF verticalLineMidPoint = calcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
 
             DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, QuarterWidth); // draw center line            
 
-            PointF pointForNextStitch = calcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
+            PointF pointForNextStitch = CalcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
 
             return pointForNextStitch;
+        }
+
+        internal PointF DrawFrontLoopDoubleCrochet(float x, float y, double pAngle, float pHeightMultiplier)
+        {
+            var verticalLineStartPoint = new PointF(x, y); //this is the bottom of the stitch, line will be drawn upwards
+
+            PointF verticalLineEndPoint = DrawVerticalLine(verticalLineStartPoint, pHeightMultiplier, pAngle);
+
+            DrawHorizontalLineFromMidPoint(verticalLineEndPoint, pAngle, HalfWidth); // draw top line
+
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+
+            DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, QuarterWidth); // draw center line 
+
+            DrawFrontLoopFromCenterPoint(verticalLineStartPoint);
+
+            PointF pointForNextStitch = CalcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
+
+            return pointForNextStitch;            
         }
 
         public void DrawToplessDoubleCrochet(float x, float y, double pAngle, float pHeightMultiplier)
@@ -129,7 +194,7 @@ namespace SVGplay
 
             PointF verticalLineEndPoint = DrawVerticalLine(verticalLineStartPoint, pHeightMultiplier, pAngle);
 
-            PointF verticalLineMidPoint = calcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
 
             DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, QuarterWidth); // draw center line  
         }
@@ -142,11 +207,11 @@ namespace SVGplay
 
             DrawHorizontalLineFromMidPoint(verticalLineEndPoint, pAngle, HalfWidth); // draw top line                      
 
-            var lengthOfVerticalLine = pHeightMultiplier * minRowHeight;
+            var lengthOfVerticalLine = pHeightMultiplier * MinRowHeight;
 
             var verticalOffset = lengthOfVerticalLine * 0.05f;
 
-            PointF verticalLineMidPoint = calcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
 
             var upperMidPoint = new PointF(verticalLineMidPoint.X, verticalLineMidPoint.Y + verticalOffset);
 
@@ -156,7 +221,7 @@ namespace SVGplay
             
             DrawHorizontalLineFromMidPoint(lowerMidPoint, pAngle, QuarterWidth); // draw center line 2             
 
-            PointF pointForNextStitch = calcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
+            PointF pointForNextStitch = CalcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
 
             return pointForNextStitch;            
         }
@@ -169,9 +234,9 @@ namespace SVGplay
 
             DrawHorizontalLineFromMidPoint(verticalLineEndPoint, pAngle, HalfWidth); // draw top line            
 
-            var verticalOffset = (pHeightMultiplier * minRowHeight) * 0.05f;
+            var verticalOffset = (pHeightMultiplier * MinRowHeight) * 0.05f;
 
-            PointF verticalLineMidPoint = calcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
+            PointF verticalLineMidPoint = CalcPoints.CalculateMidPoint(verticalLineStartPoint, verticalLineEndPoint); // midpoint of vertical line which we want horizontal to cross through
 
             var upperMidPoint = new PointF(verticalLineMidPoint.X, verticalLineMidPoint.Y + verticalOffset);
 
@@ -183,73 +248,58 @@ namespace SVGplay
 
             DrawHorizontalLineFromMidPoint(verticalLineMidPoint, pAngle, QuarterWidth); // draw center line 3 
 
-            PointF pointForNextStitch = calcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
+            PointF pointForNextStitch = CalcPoints.CalculateEndPoint(verticalLineEndPoint, RowSpacing, pAngle);
 
             return pointForNextStitch;
         }
 
         public void DrawVerticalChainStitch(float x, float y, double pAngle, float heightMultiplier)
         {
-            PointF topLeftPoint = calcPoints.CalculateTopLeft(x, y, minRowHeight * heightMultiplier);
+            PointF topLeftPoint = CalcPoints.CalculateTopLeft(x, y, MinRowHeight * heightMultiplier);
 
-            draw.DrawEllipse(topLeftPoint, StitchWidth, minRowHeight * 0.6f);
-        }
-
-        public void DrawVerticalChainStitch(float x, float y)
-        {
-            
+            draw.DrawEllipse(topLeftPoint, StitchWidth, MinRowHeight * 0.6f);
         }
 
         public void DrawHorizontalChainStitch(float x, float y, double pAngle, float heightMultiplier)
         {
-            PointF topLeftPoint = calcPoints.CalculateTopLeft(x - 1.5f, y, minRowHeight*heightMultiplier);
+            PointF topLeftPoint = CalcPoints.CalculateTopLeft(x - 1.5f, y, MinRowHeight*heightMultiplier);
 
-            draw.DrawEllipse(topLeftPoint, minRowHeight * heightMultiplier, StitchWidth);
-        }
-
-        public void DrawHorizontalChainStitch(float x, float y, float rowHeight)
-        {
-
-        }
-
-        public void DrawFrontLoopOnly(float x, float y)
-        {
-            g.DrawArc(p, x, y, 5, 3, 0, 180);
+            draw.DrawEllipse(topLeftPoint, MinRowHeight * heightMultiplier, StitchWidth);
         }
 
         public void DrawBackLoopOnly(float x, float y)
         {
-            g.DrawArc(p, x, y, 5, 3, 0, -180);
+            G.DrawArc(P, x, y, 5, 3, 0, -180);
         }
 
         public void DrawFrontPostDoubleCrochet(float x, float y)
         {
-            var stitchHeigth = minRowHeight * 3;
+            var stitchHeigth = MinRowHeight * 3;
             draw.DrawVerticalMiddleLine(x, y, stitchHeigth);
             draw.DrawTopLine(x, y);
             draw.DrawCentralDiagLine(x, y, stitchHeigth);
-            g.DrawArc(p, x, (y + stitchHeigth), StitchWidth, (minRowHeight / 2), 270, 270);
+            G.DrawArc(P, x, (y + stitchHeigth), StitchWidth, (MinRowHeight / 2), 270, 270);
         }
 
         public void DrawBackPostDoubleCrochet(float x, float y)
         {
-            var stitchHeigth = minRowHeight * 3;
+            var stitchHeigth = MinRowHeight * 3;
             draw.DrawVerticalMiddleLine(x, y, stitchHeigth);
             draw.DrawTopLine(x, y);
             draw.DrawCentralDiagLine(x, y, stitchHeigth);
-            g.DrawArc(p, x, (y + stitchHeigth), StitchWidth, (minRowHeight / 2), 270, -270);
+            G.DrawArc(P, x, (y + stitchHeigth), StitchWidth, (MinRowHeight / 2), 270, -270);
         }
 
         public void DrawDiagStitch(float x, float y)
         {
-            draw.DrawDiagonalCenterLineToLeftStitch(x, y, minRowHeight);
-            draw.DrawDiagonalCenterLineToRightStitch(x, y, minRowHeight);
+            draw.DrawDiagonalCenterLineToLeftStitch(x, y, MinRowHeight);
+            draw.DrawDiagonalCenterLineToRightStitch(x, y, MinRowHeight);
             draw.DrawTopLine(x, y);
         }
 
         public void DrawThreeLoopPuffStitch(float x, float y, int heightMultiple)
         {
-            var pHeigth = minRowHeight * heightMultiple;
+            var pHeigth = MinRowHeight * heightMultiple;
             draw.DrawTopLine(x, y);
             draw.DrawVerticalMiddleLine(x, y, pHeigth);
             draw.DrawOuterArcs(x, y, pHeigth);
@@ -257,7 +307,7 @@ namespace SVGplay
 
         public void DrawFiveLoopPuffStitch(float x, float y, int heightMultiple)
         {
-            var pHeight = minRowHeight * heightMultiple;
+            var pHeight = MinRowHeight * heightMultiple;
             draw.DrawTopLine(x, y);
             draw.DrawVerticalMiddleLine(x, y, pHeight);
             draw.DrawOuterArcs(x, y, pHeight);
