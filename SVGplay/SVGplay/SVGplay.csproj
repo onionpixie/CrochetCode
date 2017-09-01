@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatePoints.cs" />
+    <Compile Include="Stitches\HalfDoubleCrochetIncrease.cs" />
     <Compile Include="Stitches\FrontLoopDoubleCrochet.cs" />
     <Compile Include="Stitches\DoubleCrochet.cs" />
     <Compile Include="DrawingComponents.cs" />

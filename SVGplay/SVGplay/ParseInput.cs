@@ -110,6 +110,9 @@ namespace SVGplay
                     case Stitch.StitchSymbol.fldc:
                         stitch = new FrontLoopDoubleCrochet();
                         break;
+                    case Stitch.StitchSymbol.hdcinc:
+                        stitch = new HalfDoubleCrochetIncrease();
+                        break;
                     default:
                         throw new Exception("unexpected stitch symbol");
                 }

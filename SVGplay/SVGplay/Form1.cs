@@ -17,6 +17,15 @@ namespace SVGplay
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (circleCheckBox.Checked)
+            {
+                parameters.Circle = true;
+            }
+            else
+            {
+                parameters.Circle = false;
+            }
+
             Parameters.Graphics.Clear(Color.AliceBlue);
 
             var parseInput = new ParseInput(patternToChart.Text);   
@@ -37,7 +46,12 @@ namespace SVGplay
             Parameters = DrawingParameters.GetInstance();
             Parameters.Graphics = CreateGraphics();
             Parameters.Pen = new Pen(Brushes.Black, 1);
-        }       
+        }
+
+        private void patternToChart_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
@@ -45,6 +59,7 @@ namespace SVGplay
 // 21 ch, turn, 1 ch, 10 sc, 10 dc, turn, 2 ch, 10 hdc, 10 tr
 //17 ch, turn, 1 ch, 16 sc, turn, 2 ch, 16 hdc, turn, 3 ch, 16 dc, turn, 4 ch, 16 tr, turn
 //17 ch, turn, 1 ch, 1 sc, 1 ch, 11 sc, 1 ch, 2 sc, turn, 3 ch, 3 dc, 1 dc5shell, 2 dc, 1 dc3tog, 1 ch, 2 dc, turn, 1 ch, 1 sc, 1 ch,  11 sc, 1 ch, 2 sc, turn, 3 ch, 1 tr, 1 ch, 11 tr, 1 ch, 2 tr, turn, 1 ch, 1 sc, 1 ch, 11 sc, 1 ch, 2 sc, turn, 3 ch, 1 dc, 1 ch, 11 dc, 1 ch, 2 dc, end
-//10 dc, turn, 10 dc, turn, 10 dc, turn
+//10 dc, turn, 10 dc, turn, 10 dc, turn\
+ 
 //12 hdc, line, 12 dcinc, line, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, 1 dc, 1 dcinc, line, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc, 2 dc, 1 dcinc
 //12 hdc, line, 12 hdcinc, line, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, 1 hdc, 1 hdcinc, line, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc, 2 hdc, 1 hdcinc

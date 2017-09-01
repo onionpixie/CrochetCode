@@ -28,7 +28,7 @@ namespace SVGplay
 
         
 
-        public abstract void Draw(float x, float y, double pAngle);
+        public abstract PointF Draw(float x, float y, double pAngle);
 
         //public int number;
         //public PointF startingCoordinate;

@@ -12,6 +12,7 @@ namespace SVGplay
         private float stitchSpacing = 3.0f;
         private double stitchRotation = 270;
         private float xIndentForRows = 50.0f;
+        private float offsetForIncrease = 8.0f;
 
         public Graphics Graphics { get; set; }
         public double StitchRotation { get => stitchRotation; set => stitchRotation = value; }
@@ -22,6 +23,7 @@ namespace SVGplay
         public Pen Pen { get => pen; set => pen = value; }
         public float SingleUnitHeight { get => singleUnitHeight; }
         public float StitchWidth { get => stitchWidth; }
+        public float OffsetForIncrease { get => offsetForIncrease; set => offsetForIncrease = value; }
 
         private DrawingParameters() { }
 

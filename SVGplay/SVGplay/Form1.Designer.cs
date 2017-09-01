@@ -31,6 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.patternToChart = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.circleCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -45,27 +46,39 @@
             // 
             // patternToChart
             // 
-            this.patternToChart.Location = new System.Drawing.Point(871, 105);
+            this.patternToChart.Location = new System.Drawing.Point(871, 88);
             this.patternToChart.Multiline = true;
             this.patternToChart.Name = "patternToChart";
             this.patternToChart.Size = new System.Drawing.Size(152, 311);
             this.patternToChart.TabIndex = 1;
             this.patternToChart.Text = "20 flsc";
+            this.patternToChart.TextChanged += new System.EventHandler(this.patternToChart_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(868, 89);
+            this.label1.Location = new System.Drawing.Point(868, 72);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Pattern to chart:";
+            // 
+            // circleCheckBox
+            // 
+            this.circleCheckBox.AutoSize = true;
+            this.circleCheckBox.Location = new System.Drawing.Point(871, 406);
+            this.circleCheckBox.Name = "circleCheckBox";
+            this.circleCheckBox.Size = new System.Drawing.Size(58, 17);
+            this.circleCheckBox.TabIndex = 3;
+            this.circleCheckBox.Text = "Circle?";
+            this.circleCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1028, 641);
+            this.Controls.Add(this.circleCheckBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.patternToChart);
             this.Controls.Add(this.button1);
@@ -82,6 +95,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox patternToChart;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox circleCheckBox;
     }
 }
 
